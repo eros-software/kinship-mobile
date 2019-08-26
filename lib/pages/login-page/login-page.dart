@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kinship_mobile/app-state.dart';
@@ -6,6 +7,22 @@ import 'package:kinship_mobile/pages/login-page/+model/login-page-model.dart';
 
 class LoginPage extends StatelessWidget {
   static String tag = 'login-page';
+
+  void _initiateFacebookLogin(dispatchLoginFacebookAction) async {
+    final facebookLoginResult = await  FacebookLogin().logInWithReadPermissions(['email', 'user_friends', 'user_gender', 'user_likes', 'user_birthday']);
+     switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("LoggedIn");
+        dispatchLoginFacebookAction(facebookLoginResult.accessToken);
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +46,7 @@ class LoginPage extends StatelessWidget {
                     'Kinship',
                     style: TextStyle(
                       fontFamily: 'DancingScript',
-                      fontSize: 104,
+                      fontSize: 88,
                       fontWeight: FontWeight.bold,
                       color: Colors.white
                     ),
@@ -43,7 +60,7 @@ class LoginPage extends StatelessWidget {
                       width: 64,
                       child: InkWell(
                         child: Icon(FontAwesomeIcons.facebook, color: Colors.white, size: 60),
-                        onTap: () => loginPageModel.loginAction(),
+                        onTap: () => _initiateFacebookLogin(loginPageModel.loginAction),
                       ),
                     ),
                   )

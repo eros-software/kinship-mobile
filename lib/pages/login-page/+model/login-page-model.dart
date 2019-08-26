@@ -1,10 +1,11 @@
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:kinship_mobile/app-state.dart';
 import 'package:kinship_mobile/pages/login-page/+state/login-page-actions.dart';
 import 'package:redux/redux.dart';
 
 class LoginPageModel{
 
-  final Function() loginAction;
+  final Function(FacebookAccessToken facebookAccessToken) loginAction;
   final Function() errorAction;
   final hasError;
 
@@ -16,9 +17,9 @@ class LoginPageModel{
 
   static LoginPageModel fromStore(Store<AppState> store) =>
     new LoginPageModel(
-      loginAction: () => store.dispatch(new LoginAction()),
+      loginAction: (FacebookAccessToken facebookAccessToken) => store.dispatch(new LoginAction(facebookAccessToken)),
       errorAction: () => store.dispatch(new ErrorAction()),
-      hasError: store.state.loginState.hasError,
+      hasError: store.state.loginPageState.hasError,
     );
 
 }

@@ -1,30 +1,36 @@
+import 'package:kinship_mobile/models/usuario.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class LoginState{
+class LoginPageState{
 
   final bool hasError;
   final String errorMessage;
+  final Usuario user;
 
-  LoginState({
+  LoginPageState({
     @required this.hasError,
     @required this.errorMessage,
+    @required this.user,
   });
 
-  factory LoginState.initial(){
-    return new LoginState(
+  factory LoginPageState.initial(){
+    return new LoginPageState(
       hasError: false,
       errorMessage: "",
+      user: null
     );
   }
 
-  LoginState copyWith({
+  LoginPageState copyWith({
     bool hasError,
     String errorMessage,
+    Usuario user,
   }){
-    return new LoginState(
+    return new LoginPageState(
       hasError: hasError ?? this.hasError,
       errorMessage: errorMessage ?? this.errorMessage,
+      user: user ?? this.user,
     );
   }
 }
