@@ -24,8 +24,8 @@ dependencies:
   flutter_redux: 0.5.3
   rxdart: 0.22.0
   shared_preferences: 0.5.3+1
-  redux_epics: ^0.10.6
   auto_size_text: 2.0.1
+  dio: ^2.1.0
   soma_graphql_flutter:
     path: /var/www/soma-graphql-flutter
   flutter:
