@@ -10,18 +10,8 @@ class LoginPage extends StatelessWidget {
 
   void _initiateFacebookLogin(dispatchLoginFacebookAction) async {
     final facebookLoginResult = await  FacebookLogin().logInWithReadPermissions(['email', 'user_friends', 'user_gender', 'user_likes', 'user_birthday']);
-     switch (facebookLoginResult.status) {
-      case FacebookLoginStatus.error:
-        print("Error");
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        print("CancelledByUser");
-        break;
-      case FacebookLoginStatus.loggedIn:
-        print("LoggedIn");
-        dispatchLoginFacebookAction(facebookLoginResult.accessToken);
-        break;
-    }
+     if (facebookLoginResult.status == FacebookLoginStatus.loggedIn)
+      dispatchLoginFacebookAction(facebookLoginResult.accessToken);
   }
 
   @override
