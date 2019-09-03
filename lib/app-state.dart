@@ -1,25 +1,31 @@
+import 'package:kinship_mobile/pages/home-page/+state/home-page-state.dart';
 import 'package:kinship_mobile/pages/login-page/+state/login-page-state.dart';
 import 'package:meta/meta.dart';
 
 @immutable
 class AppState {
-  final LoginState loginState;
+  final LoginPageState loginPageState;
+  final HomePageState homePageState;
 
   AppState({
-    @required this.loginState,
+    @required this.loginPageState,
+    @required this.homePageState,
   });
 
   factory AppState.initial() {
     return AppState(
-      loginState: LoginState.initial(),
+      loginPageState: LoginPageState.initial(),
+      homePageState: HomePageState.initial(),
     );
   }
 
   AppState copyWith({
-    LoginState loginState,
+    LoginPageState loginPageState,
+    HomePageState homePageState,
   }) {
     return AppState(
-      loginState: loginState ?? this.loginState,
+      loginPageState: loginPageState ?? this.loginPageState,
+      homePageState: homePageState ?? this.homePageState,
     );
   }
 }

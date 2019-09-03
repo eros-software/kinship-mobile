@@ -1,6 +1,8 @@
 import 'package:kinship_mobile/app-state.dart';
+import 'package:kinship_mobile/pages/home-page/+state/home-page-reducers.dart';
 import 'package:kinship_mobile/pages/login-page/+state/login-page-reducers.dart';
 
-AppState reducers(AppState state, dynamic action) => new AppState(
-  loginState: loginReducer(state.loginState, action),
+AppState appReducers(AppState state, dynamic action) => new AppState(
+  loginPageState: loginPageReducer(state.loginPageState, action),
+  homePageState: homePageReducer(state.homePageState, action),
 );
