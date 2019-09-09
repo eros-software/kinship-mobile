@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:kinship_mobile/app-middleware.dart';
 import 'package:kinship_mobile/app-routes.dart';
+import 'package:kinship_mobile/pages/initial-setup-widget/initial-setup-widget.dart';
 import 'package:redux/redux.dart';
 import 'package:kinship_mobile/app-reducers.dart';
 import 'package:kinship_mobile/app-state.dart';
 import 'package:kinship_mobile/keys.dart';
-import 'package:kinship_mobile/pages/login-page/login-page.dart';
 
 class MyApp extends StatelessWidget {
 
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.pink,
         ),
         navigatorKey: Keys.navKey,
-        home: LoginPage(),
+        home: InitialSetupWidget(),
         routes: appRoutes,
       ),
     );
