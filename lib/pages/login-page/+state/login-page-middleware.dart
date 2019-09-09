@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:kinship_mobile/graphql/graphql.dart';
 import 'package:kinship_mobile/keys.dart';
 import 'package:kinship_mobile/models/usuario.dart';
+import 'package:kinship_mobile/pages/initial-setup-widget/+state/initial-setup-widget-actions.dart';
 import 'package:kinship_mobile/pages/login-page/+state/login-page-actions.dart';
 import 'package:redux/redux.dart';
 
@@ -46,7 +47,8 @@ class LoginPageMiddleware extends MiddlewareClass {
           }
         }
       );
-      final user = Usuario.fromJson(response['loginFacebook']['usuario']);
+      final Usuario user = Usuario.fromJson(response['loginFacebook']['usuario']);
+      store.dispatch(new SavePreferences(user));
       store.dispatch(new LoginSuccessAction(user, response['loginFacebook']['show_introduction_page']));
     }
 
