@@ -12,24 +12,24 @@ class InitialSetupWidgetMiddleware extends MiddlewareClass {
   void call(Store store, action, NextDispatcher next) async {
 
     if (action is VerifyPreferences) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final user = prefs.get('user');
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      final user = sharedPreferences.get('user');
       (user != null) 
         ? store.dispatch(new LoginSuccessAction(Usuario.fromJson(json.decode(user)), false))
         : Keys.navKey.currentState.pushReplacementNamed("login-page");
     }
 
     if (action is DeletePreferences) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.remove('user');
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      await sharedPreferences.remove('user');
     }
  
     if (action is SavePreferences) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('user', json.encode(action.user));
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      await sharedPreferences.setString('user', json.encode(action.user));
     }
     
     next(action);
-    
+
   }
 }
