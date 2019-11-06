@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:kinship_mobile/graphql/client.dart';
 import 'package:kinship_mobile/graphql/graphql.dart';
 import 'package:kinship_mobile/keys.dart';
 import 'package:kinship_mobile/models/usuario.dart';
@@ -47,12 +48,13 @@ class LoginPageMiddleware extends MiddlewareClass {
           }
         }
       );
-      final Usuario user = Usuario.fromJson(response['loginFacebook']['usuario']);
+      final Usuario user = Usuario.fromJson({...response['loginFacebook']['usuario'], 'token': response['loginFacebook']['token']});
       store.dispatch(new SavePreferences(user));
       store.dispatch(new LoginSuccessAction(user, response['loginFacebook']['show_introduction_page']));
     }
 
     if(action is LoginSuccessAction) {
+      setToken(action.user.token);
       (action.showIntroductionPage) ? Keys.navKey.currentState.pushReplacementNamed('introduction-page') : Keys.navKey.currentState.pushReplacementNamed('home-page');
     }
 
