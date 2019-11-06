@@ -17,3 +17,7 @@ class LoginSuccessAction {
 class ErrorAction {
   ErrorAction();
 }
+
+class LogoutAction {
+  LogoutAction();
+}
