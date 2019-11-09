@@ -3,7 +3,7 @@ class LoadPosts {
 }
 
 class LoadPostsSuccess {
-  final List posts;
+  final List<Map<String, dynamic>> posts;
   LoadPostsSuccess(this.posts);
 }
 
@@ -12,7 +12,7 @@ class GetMorePosts {
 }
 
 class GetMorePostsSuccess {
-  final List posts;
+  final List<Map<String, dynamic>> posts;
   GetMorePostsSuccess(this.posts);
 }
 
@@ -21,6 +21,28 @@ class RefreshPosts {
 }
 
 class RefreshPostsSuccess {
-  final List posts;
+  final List<Map<String, dynamic>> posts;
   RefreshPostsSuccess(this.posts);
+}
+
+class LikePost {
+  final Map<String, dynamic> post;
+  LikePost(this.post);
+}
+
+class LikePostSuccess {
+  final Map<String, dynamic> post;
+  final int userId;
+  LikePostSuccess(this.post, this.userId);
+}
+
+class DislikePost {
+  final Map<String, dynamic> post;
+  DislikePost(this.post);
+}
+
+class DislikePostSuccess {
+  final Map<String, dynamic> post;
+  final int userId;
+  DislikePostSuccess(this.post, this.userId);
 }

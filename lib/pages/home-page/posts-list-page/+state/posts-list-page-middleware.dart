@@ -16,8 +16,31 @@ class PostsListPageMiddleware extends MiddlewareClass {
             id
             nome
           }
+          likes {
+            id_usuario
+          }
         }
       }
+    }
+  }
+  """.replaceAll('\n', ' ');
+
+  String likePost = 
+  """
+  mutation likePost(\$id_post: Int!) {
+    likePost(id_post: \$id_post) {
+      code
+      message
+    }
+  }
+  """.replaceAll('\n', ' ');
+
+  String dislikePost = 
+  """
+  mutation dislikePost(\$id_post: Int!) {
+    dislikePost(id_post: \$id_post) {
+      code
+      message
     }
   }
   """.replaceAll('\n', ' ');
@@ -34,7 +57,7 @@ class PostsListPageMiddleware extends MiddlewareClass {
             'offset': store.state.postsListPageState.offset,
           }
         );
-        store.dispatch(new LoadPostsSuccess(response['getAllPosts']['data']['list']));
+        store.dispatch(new LoadPostsSuccess(List<Map<String,dynamic>>.from(response['getAllPosts']['data']['list'])));
       } catch (e) {
         print(e);
       }
@@ -53,7 +76,7 @@ class PostsListPageMiddleware extends MiddlewareClass {
             'offset': store.state.postsListPageState.offset,
           }
         );
-        store.dispatch(new GetMorePostsSuccess(response['getAllPosts']['data']['list']));
+        store.dispatch(new GetMorePostsSuccess(List<Map<String,dynamic>>.from(response['getAllPosts']['data']['list'])));
       } catch (e) {
         print(e);
       }
@@ -73,7 +96,7 @@ class PostsListPageMiddleware extends MiddlewareClass {
             'offset': 0,
           }
         );
-        store.dispatch(new RefreshPostsSuccess(response['getAllPosts']['data']['list']));
+        store.dispatch(new RefreshPostsSuccess(List<Map<String,dynamic>>.from(response['getAllPosts']['data']['list'])));
       } catch (e) {
         print(e);
       }
@@ -81,6 +104,42 @@ class PostsListPageMiddleware extends MiddlewareClass {
 
     if (action is RefreshPostsSuccess) {
 
+    }
+
+    if (action is LikePost) {
+      try {
+        await mutation(
+          likePost,
+          variables: {
+            'id_post': action.post['id'],
+          }
+        );
+        store.dispatch(new LikePostSuccess(action.post, store.state.loginPageState.user.id));
+      } catch(e) {
+        print(e);
+      }
+    }
+  
+    if(action is LikePostSuccess) {
+
+    }
+
+    if (action is DislikePost) {
+      try {
+        await mutation(
+          dislikePost,
+          variables: {
+            'id_post': action.post['id'],
+          }
+        );
+        store.dispatch(new DislikePostSuccess(action.post, store.state.loginPageState.user.id));
+      } catch(e) {
+        print(e);
+      }
+    }
+
+    if(action is DislikePostSuccess) {
+      
     }
     
     next(action);
