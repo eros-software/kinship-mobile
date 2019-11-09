@@ -20,7 +20,15 @@ class PostsListPage extends StatelessWidget {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  Widget _listPosts(List posts, int offset, Function getMorePosts, Function refreshPosts) => RefreshIndicator(
+  Widget _listPosts(
+    List<Map<String, dynamic>> posts,
+    int offset,
+    Function getMorePosts,
+    Function refreshPosts,
+    int userId,
+    Function likePost,
+    Function dislikePost,
+  ) => RefreshIndicator(
     child: LoadMoreCustom(
       isFinish: offset > posts.length,
       onLoadMore: () => _loadMore(getMorePosts),
@@ -30,7 +38,52 @@ class PostsListPage extends StatelessWidget {
         shrinkWrap: true,
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
-          return PostCardWidget(post: posts[index]);
+          return Column(
+            children: <Widget>[
+              PostCardWidget(post: posts[index]),
+              SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.message, color: Colors.pink[900]),
+                      Text(' 2'),
+                    ],
+                  ),
+                  (posts[index]['likes'].map((likes) => likes['id_usuario']).contains(userId))
+                  ? InkWell(
+                    onTap: () => dislikePost(posts[index]),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.favorite, color: Colors.pink[900]),
+                        Text(' ${posts[index]['likes'].length}')
+                      ],
+                    ),
+                  )
+                  : InkWell(
+                    onTap: () => likePost(posts[index]),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.favorite_border, color: Colors.pink[900]),
+                        Text(' ${posts[index]['likes'].length}')
+                      ],
+                    ),
+                  )
+                  
+                ],
+              ),
+              SizedBox(height: 4),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Divider(thickness: 2),
+                  )
+                ],
+              ),
+            ],
+          );
         },
       ),
     ),
@@ -40,7 +93,6 @@ class PostsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PostsListPageModel>(
-      distinct: true,
       converter: (store) => PostsListPageModel.fromStore(store),
       onInit: (store) {
         if(store.state.postsListPageState.firstBuild) {
@@ -56,7 +108,15 @@ class PostsListPage extends StatelessWidget {
                 children: <Widget> [
                   !postsListPageModel.firstBuild 
                     ? (postsListPageModel.posts != null)
-                        ? _listPosts(postsListPageModel.posts, postsListPageModel.offset, postsListPageModel.getMorePosts, postsListPageModel.refreshPosts)
+                        ? _listPosts(
+                          postsListPageModel.posts,
+                          postsListPageModel.offset,
+                          postsListPageModel.getMorePosts,
+                          postsListPageModel.refreshPosts,
+                          postsListPageModel.userId,
+                          postsListPageModel.likePost,
+                          postsListPageModel.dislikePost
+                        )
                         : Center(child: Text('Não há posts'))
                     : Center(child: CircularProgressIndicator()),
                   Positioned(
