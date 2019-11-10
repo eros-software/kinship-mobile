@@ -9,10 +9,7 @@ final postsListPageReducers = combineReducers<PostsListPageState>([
   TypedReducer<PostsListPageState, GetMorePostsSuccess>(_getMorePostsSuccess),
   TypedReducer<PostsListPageState, RefreshPosts>(_refreshPosts),
   TypedReducer<PostsListPageState, RefreshPostsSuccess>(_refreshPostsSuccess),
-  TypedReducer<PostsListPageState, LikePost>(_likePost),
-  TypedReducer<PostsListPageState, LikePostSuccess>(_likePostSuccess),
-  TypedReducer<PostsListPageState, DislikePost>(_dislikePost),
-  TypedReducer<PostsListPageState, DislikePostSuccess>(_dislikePostSuccess),
+
 ]);
 
 PostsListPageState _loadPosts(PostsListPageState state, LoadPosts action) => state;
@@ -31,26 +28,3 @@ PostsListPageState _refreshPosts(PostsListPageState state, RefreshPosts action) 
 
 PostsListPageState _refreshPostsSuccess(PostsListPageState state, RefreshPostsSuccess action) => state.copyWith(posts: action.posts, offset: 5);
 
-PostsListPageState _likePost(PostsListPageState state, LikePost action) => state;
-
-PostsListPageState _likePostSuccess(PostsListPageState state, LikePostSuccess action) {
-  final List<dynamic> listPosts = List<Map<String, dynamic>>.from(state.posts);
-  final dynamic newPost = Map.from(action.post);
-  newPost['likes'].insert(0, { 'id_usuario': action.userId });
-  final int index = listPosts.indexOf(action.post);
-  listPosts.removeAt(index);
-  listPosts.insert(index, newPost);
-  return state.copyWith(posts: listPosts);
-}
-
-PostsListPageState _dislikePost(PostsListPageState state, DislikePost action) => state;
-
-PostsListPageState _dislikePostSuccess(PostsListPageState state, DislikePostSuccess action) {
-  final List<dynamic> listPosts = List<Map<String, dynamic>>.from(state.posts);
-  final dynamic newPost = Map.from(action.post); 
-  newPost['likes'].removeWhere((like) => like['id_usuario'] == action.userId);
-  final int index = listPosts.indexOf(action.post);
-  listPosts.removeAt(index);
-  listPosts.insert(index, newPost);
-  return state.copyWith(posts: listPosts);
-}

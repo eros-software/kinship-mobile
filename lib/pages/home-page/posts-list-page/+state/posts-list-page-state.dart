@@ -23,7 +23,6 @@ class PostsListPageState{
 
   PostsListPageState copyWith({
     posts,
-    total,
     offset,
     firstBuild,
   }) {

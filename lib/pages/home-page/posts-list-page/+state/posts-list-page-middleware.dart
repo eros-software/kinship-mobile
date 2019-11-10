@@ -19,31 +19,15 @@ class PostsListPageMiddleware extends MiddlewareClass {
           likes {
             id_usuario
           }
+          comentarios {
+            texto
+          }
         }
       }
     }
   }
   """.replaceAll('\n', ' ');
 
-  String likePost = 
-  """
-  mutation likePost(\$id_post: Int!) {
-    likePost(id_post: \$id_post) {
-      code
-      message
-    }
-  }
-  """.replaceAll('\n', ' ');
-
-  String dislikePost = 
-  """
-  mutation dislikePost(\$id_post: Int!) {
-    dislikePost(id_post: \$id_post) {
-      code
-      message
-    }
-  }
-  """.replaceAll('\n', ' ');
 
   @override
   Future call(Store store, action, NextDispatcher next) async {
@@ -104,42 +88,6 @@ class PostsListPageMiddleware extends MiddlewareClass {
 
     if (action is RefreshPostsSuccess) {
 
-    }
-
-    if (action is LikePost) {
-      try {
-        await mutation(
-          likePost,
-          variables: {
-            'id_post': action.post['id'],
-          }
-        );
-        store.dispatch(new LikePostSuccess(action.post, store.state.loginPageState.user.id));
-      } catch(e) {
-        print(e);
-      }
-    }
-  
-    if(action is LikePostSuccess) {
-
-    }
-
-    if (action is DislikePost) {
-      try {
-        await mutation(
-          dislikePost,
-          variables: {
-            'id_post': action.post['id'],
-          }
-        );
-        store.dispatch(new DislikePostSuccess(action.post, store.state.loginPageState.user.id));
-      } catch(e) {
-        print(e);
-      }
-    }
-
-    if(action is DislikePostSuccess) {
-      
     }
     
     next(action);

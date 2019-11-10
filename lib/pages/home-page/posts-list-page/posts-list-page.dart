@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:kinship_mobile/app-state.dart';
 import 'package:kinship_mobile/keys.dart';
+import 'package:kinship_mobile/models/post-arguments.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/+model/posts-list-page-model.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/+state/posts-list-page-actions.dart';
 import 'package:kinship_mobile/utils/loadmore-custom-widget/loadmore-custom-widget.dart';
@@ -25,9 +26,6 @@ class PostsListPage extends StatelessWidget {
     int offset,
     Function getMorePosts,
     Function refreshPosts,
-    int userId,
-    Function likePost,
-    Function dislikePost,
   ) => RefreshIndicator(
     child: LoadMoreCustom(
       isFinish: offset > posts.length,
@@ -38,51 +36,24 @@ class PostsListPage extends StatelessWidget {
         shrinkWrap: true,
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: <Widget>[
-              PostCardWidget(post: posts[index]),
-              SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Icon(Icons.message, color: Colors.pink[900]),
-                      Text(' 2'),
-                    ],
-                  ),
-                  (posts[index]['likes'].map((likes) => likes['id_usuario']).contains(userId))
-                  ? InkWell(
-                    onTap: () => dislikePost(posts[index]),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.favorite, color: Colors.pink[900]),
-                        Text(' ${posts[index]['likes'].length}')
-                      ],
-                    ),
-                  )
-                  : InkWell(
-                    onTap: () => likePost(posts[index]),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.favorite_border, color: Colors.pink[900]),
-                        Text(' ${posts[index]['likes'].length}')
-                      ],
-                    ),
-                  )
-                  
-                ],
-              ),
-              SizedBox(height: 4),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Divider(thickness: 2),
-                  )
-                ],
-              ),
-            ],
+          return InkWell(
+            onTap: () => Keys.navKey.currentState.pushNamed(
+              'post-detalhe-page',
+              arguments: PostArguments(posts[index]),
+            ),
+            child: Column(
+              children: <Widget>[
+                PostCardWidget(post: posts[index]),
+                SizedBox(height: 4),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Divider(thickness: 2),
+                    )
+                  ],
+                ),
+              ],
+            ),
           );
         },
       ),
@@ -113,9 +84,6 @@ class PostsListPage extends StatelessWidget {
                           postsListPageModel.offset,
                           postsListPageModel.getMorePosts,
                           postsListPageModel.refreshPosts,
-                          postsListPageModel.userId,
-                          postsListPageModel.likePost,
-                          postsListPageModel.dislikePost
                         )
                         : Center(child: Text('Não há posts'))
                     : Center(child: CircularProgressIndicator()),
