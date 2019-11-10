@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 @immutable
 class PostsListPageState{
 
-  final List posts;
+  final List<Map<String, dynamic>> posts;
   final int offset;
   final bool firstBuild;
 
@@ -23,7 +23,6 @@ class PostsListPageState{
 
   PostsListPageState copyWith({
     posts,
-    total,
     offset,
     firstBuild,
   }) {

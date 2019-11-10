@@ -16,11 +16,18 @@ class PostsListPageMiddleware extends MiddlewareClass {
             id
             nome
           }
+          likes {
+            id_usuario
+          }
+          comentarios {
+            texto
+          }
         }
       }
     }
   }
   """.replaceAll('\n', ' ');
+
 
   @override
   Future call(Store store, action, NextDispatcher next) async {
@@ -34,7 +41,7 @@ class PostsListPageMiddleware extends MiddlewareClass {
             'offset': store.state.postsListPageState.offset,
           }
         );
-        store.dispatch(new LoadPostsSuccess(response['getAllPosts']['data']['list']));
+        store.dispatch(new LoadPostsSuccess(List<Map<String,dynamic>>.from(response['getAllPosts']['data']['list'])));
       } catch (e) {
         print(e);
       }
@@ -53,7 +60,7 @@ class PostsListPageMiddleware extends MiddlewareClass {
             'offset': store.state.postsListPageState.offset,
           }
         );
-        store.dispatch(new GetMorePostsSuccess(response['getAllPosts']['data']['list']));
+        store.dispatch(new GetMorePostsSuccess(List<Map<String,dynamic>>.from(response['getAllPosts']['data']['list'])));
       } catch (e) {
         print(e);
       }
@@ -73,7 +80,7 @@ class PostsListPageMiddleware extends MiddlewareClass {
             'offset': 0,
           }
         );
-        store.dispatch(new RefreshPostsSuccess(response['getAllPosts']['data']['list']));
+        store.dispatch(new RefreshPostsSuccess(List<Map<String,dynamic>>.from(response['getAllPosts']['data']['list'])));
       } catch (e) {
         print(e);
       }

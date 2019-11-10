@@ -1,5 +1,4 @@
 
-import 'package:collection/collection.dart';
 import 'package:kinship_mobile/app-state.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/+state/posts-list-page-actions.dart';
 import 'package:redux/redux.dart';
@@ -7,10 +6,11 @@ import 'package:redux/redux.dart';
 class PostsListPageModel{
 
   final bool firstBuild;
-  final List posts;
+  final List<Map<String, dynamic>> posts;
   final int offset;
   final Function() getMorePosts;
   final Function() refreshPosts;
+  
 
   PostsListPageModel({
     this.firstBuild,
@@ -18,22 +18,8 @@ class PostsListPageModel{
     this.offset,
     this.getMorePosts,
     this.refreshPosts,
+
   });
-
-  @override
-  bool operator == (Object other) =>
-      identical(this, other) ||
-      other is PostsListPageModel &&
-          runtimeType == other.runtimeType &&
-          firstBuild == other.firstBuild &&
-          ListEquality().equals(posts, other.posts) &&
-          offset == other.offset;
-
-  @override
-  int get hashCode => 
-    firstBuild.hashCode ^
-    posts.hashCode ^
-    offset.hashCode;
 
   static PostsListPageModel fromStore(Store<AppState> store) =>
     new PostsListPageModel(

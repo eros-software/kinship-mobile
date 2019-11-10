@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:kinship_mobile/app-state.dart';
 import 'package:kinship_mobile/keys.dart';
+import 'package:kinship_mobile/models/post-arguments.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/+model/posts-list-page-model.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/+state/posts-list-page-actions.dart';
 import 'package:kinship_mobile/utils/loadmore-custom-widget/loadmore-custom-widget.dart';
@@ -20,7 +21,12 @@ class PostsListPage extends StatelessWidget {
     await Future.delayed(Duration(seconds: 2));
   }
 
-  Widget _listPosts(List posts, int offset, Function getMorePosts, Function refreshPosts) => RefreshIndicator(
+  Widget _listPosts(
+    List<Map<String, dynamic>> posts,
+    int offset,
+    Function getMorePosts,
+    Function refreshPosts,
+  ) => RefreshIndicator(
     child: LoadMoreCustom(
       isFinish: offset > posts.length,
       onLoadMore: () => _loadMore(getMorePosts),
@@ -30,7 +36,25 @@ class PostsListPage extends StatelessWidget {
         shrinkWrap: true,
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
-          return PostCardWidget(post: posts[index]);
+          return InkWell(
+            onTap: () => Keys.navKey.currentState.pushNamed(
+              'post-detalhe-page',
+              arguments: PostArguments(posts[index]),
+            ),
+            child: Column(
+              children: <Widget>[
+                PostCardWidget(post: posts[index]),
+                SizedBox(height: 4),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Divider(thickness: 2),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          );
         },
       ),
     ),
@@ -40,7 +64,6 @@ class PostsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, PostsListPageModel>(
-      distinct: true,
       converter: (store) => PostsListPageModel.fromStore(store),
       onInit: (store) {
         if(store.state.postsListPageState.firstBuild) {
@@ -56,7 +79,12 @@ class PostsListPage extends StatelessWidget {
                 children: <Widget> [
                   !postsListPageModel.firstBuild 
                     ? (postsListPageModel.posts != null)
-                        ? _listPosts(postsListPageModel.posts, postsListPageModel.offset, postsListPageModel.getMorePosts, postsListPageModel.refreshPosts)
+                        ? _listPosts(
+                          postsListPageModel.posts,
+                          postsListPageModel.offset,
+                          postsListPageModel.getMorePosts,
+                          postsListPageModel.refreshPosts,
+                        )
                         : Center(child: Text('Não há posts'))
                     : Center(child: CircularProgressIndicator()),
                   Positioned(

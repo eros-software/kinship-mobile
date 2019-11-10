@@ -3,7 +3,7 @@ class LoadPosts {
 }
 
 class LoadPostsSuccess {
-  final List posts;
+  final List<Map<String, dynamic>> posts;
   LoadPostsSuccess(this.posts);
 }
 
@@ -12,7 +12,7 @@ class GetMorePosts {
 }
 
 class GetMorePostsSuccess {
-  final List posts;
+  final List<Map<String, dynamic>> posts;
   GetMorePostsSuccess(this.posts);
 }
 
@@ -21,6 +21,7 @@ class RefreshPosts {
 }
 
 class RefreshPostsSuccess {
-  final List posts;
+  final List<Map<String, dynamic>> posts;
   RefreshPostsSuccess(this.posts);
 }
+
