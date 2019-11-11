@@ -7,6 +7,7 @@ import 'package:kinship_mobile/pages/home-page/+model/home-page-model.dart';
 import 'package:kinship_mobile/pages/home-page/+state/home-page-actions.dart';
 import 'package:kinship_mobile/pages/home-page/activities-list-page/activities-list-page.dart';
 import 'package:kinship_mobile/pages/home-page/chats-list-page/chats-list-page.dart';
+import 'package:kinship_mobile/pages/home-page/drawer-widget/drawer-widget.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/posts-list-page.dart';
 
 class HomePage extends StatefulWidget  {
@@ -63,7 +64,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       },
       builder: (context, homePageModel) {
         return Scaffold(
-          drawer: Text('drawer'),
+          drawer: DrawerWidget(
+            user: homePageModel.user,
+            logoutAction: homePageModel.logoutAction,
+          ),
           appBar: AppBar(
             backgroundColor: Colors.pink[900],
             title: Text(

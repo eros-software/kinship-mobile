@@ -58,6 +58,11 @@ class LoginPageMiddleware extends MiddlewareClass {
       (action.showIntroductionPage) ? Keys.navKey.currentState.pushReplacementNamed('introduction-page') : Keys.navKey.currentState.pushReplacementNamed('home-page');
     }
 
+    if(action is LogoutAction) {
+      store.dispatch(new DeletePreferences());
+      Keys.navKey.currentState.pushReplacementNamed('login-page');
+    }
+
     next(action);
   }
 
