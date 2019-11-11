@@ -1,4 +1,6 @@
 import 'package:kinship_mobile/pages/home-page/+state/home-page-state.dart';
+import 'package:kinship_mobile/pages/home-page/chats-list-page/+state/chats-list-page-state.dart';
+import 'package:kinship_mobile/pages/home-page/chats-list-page/chat-detalhe-page/+state/chat-detalhe-page-state.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/+state/posts-list-page-state.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/create-post-page/+state/create-post-page-state.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/post-detalhe-page/+state/post-detalhe-page-state.dart';
@@ -14,6 +16,8 @@ class AppState {
   final CreatePostPageState createPostPageState;
   final PostsListPageState postsListPageState;
   final PostDetalhePageState postDetalhePageState;
+  final ChatsListPageState chatsListPageState;
+  final ChatDetalhePageState chatDetalhePageState;
 
   AppState({
     @required this.loginPageState,
@@ -22,6 +26,8 @@ class AppState {
     @required this.createPostPageState,
     @required this.postsListPageState,
     @required this.postDetalhePageState,
+    @required this.chatsListPageState,
+    @required this.chatDetalhePageState,
   });
 
   factory AppState.initial() {
@@ -32,6 +38,8 @@ class AppState {
       createPostPageState: CreatePostPageState.initial(),
       postsListPageState: PostsListPageState.initial(),
       postDetalhePageState: PostDetalhePageState.initial(),
+      chatsListPageState: ChatsListPageState.initial(),
+      chatDetalhePageState: ChatDetalhePageState.initial(),
     );
   }
 
@@ -42,6 +50,8 @@ class AppState {
     CreatePostPageState createPostPageState,
     PostsListPageState postsListPageState,
     PostDetalhePageState postDetalhePageState,
+    ChatsListPageState chatsListPageState,
+    ChatDetalhePageState chatDetalhePageState,
   }) {
     return AppState(
       loginPageState: loginPageState ?? this.loginPageState,
@@ -50,6 +60,8 @@ class AppState {
       createPostPageState: createPostPageState ?? this.createPostPageState,
       postsListPageState: postsListPageState ?? this.postsListPageState,
       postDetalhePageState: postDetalhePageState ?? this.postDetalhePageState,
+      chatsListPageState: chatsListPageState ?? this.chatsListPageState,
+      chatDetalhePageState: chatDetalhePageState ?? this.chatDetalhePageState,
     );
   }
 }
