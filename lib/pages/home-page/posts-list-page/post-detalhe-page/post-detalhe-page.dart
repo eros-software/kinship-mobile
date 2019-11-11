@@ -69,7 +69,7 @@ class _PostDetalhePageState extends State<PostDetalhePage> {
       ),
   ];
 
-  ListView _comentarioWidget(List comentarios) => ListView.builder(
+  ListView _comentarioWidget(List comentarios, int userId, Function getChat) => ListView.builder(
     scrollDirection: Axis.vertical,
     shrinkWrap: true,
     itemCount: comentarios.length,
@@ -79,16 +79,9 @@ class _PostDetalhePageState extends State<PostDetalhePage> {
         leading: Padding(
           padding: EdgeInsets.only(left: 16, right: 4),
           child: CircleAvatar(
-          child: CachedNetworkImage(
-            imageUrl: comentarios[index]['usuario']['foto_perfil'],
-            placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ), 
-          
-          
-          /* CachedNetworkImageProvider(
+          backgroundImage: CachedNetworkImageProvider(
               comentarios[index]['usuario']['foto_perfil'],
-            ), */
+            ),
           ),
         ),
         title: Row(
@@ -105,9 +98,12 @@ class _PostDetalhePageState extends State<PostDetalhePage> {
             )
           ],
         ),
-        trailing: InkWell(
-          child: Text('Start Chat', style: TextStyle(color: Colors.pink[900]),),
-        )
+        trailing: (userId != comentarios[index]['usuario']['id'])
+        ? InkWell(
+            onTap: () =>  getChat(comentarios[index]['usuario']['id'], userId),
+            child: Text('Start Chat', style: TextStyle(color: Colors.pink[900]),),
+          )
+        : Container(width: 2, height: 2,),
       );
     }
   );
@@ -158,7 +154,6 @@ class _PostDetalhePageState extends State<PostDetalhePage> {
   Widget build(BuildContext context) {
     final PostArguments postArguments = ModalRoute.of(context).settings.arguments;
     return StoreConnector<AppState, PostDetalhePageModel>(
-      distinct: true,
       converter: (store) => PostDetalhePageModel.fromStore(store),
       onInit: (store) {
         store.dispatch(new LoadPost(postArguments.post['id']));
@@ -194,7 +189,7 @@ class _PostDetalhePageState extends State<PostDetalhePage> {
                   postDetalhePageModel.dislikePost,
                 ),
                 Expanded(
-                  child: _comentarioWidget(postDetalhePageModel.comentarios),
+                  child: _comentarioWidget(postDetalhePageModel.comentarios, postDetalhePageModel.userId, postDetalhePageModel.getChat),
                 ),
                 footer(postDetalhePageModel.createComentario, postDetalhePageModel.post)
               ],
