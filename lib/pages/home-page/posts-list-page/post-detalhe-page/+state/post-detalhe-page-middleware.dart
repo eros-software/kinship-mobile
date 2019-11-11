@@ -1,4 +1,6 @@
 import 'package:kinship_mobile/graphql/graphql.dart';
+import 'package:kinship_mobile/keys.dart';
+import 'package:kinship_mobile/models/chat-arguments.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/post-detalhe-page/+state/post-detalhe-page-actions.dart';
 import 'package:redux/redux.dart';
 
@@ -35,6 +37,31 @@ class PostDetalhePageMiddleware extends MiddlewareClass {
           nome
           foto_perfil
         }
+      }
+    }
+  }
+  """.replaceAll('\n', ' ');
+
+  String getUniqueChat =
+  """
+  query getUniqueChat(\$id_post: Int!, \$id_criador: Int!, \$id_receptor: Int!) {
+    getUniqueChat(id_post: \$id_post, id_criador: \$id_criador, id_receptor: \$id_receptor) {
+      code
+      chat {
+        id
+      }
+    }
+  }
+  """.replaceAll('\n', ' ');
+
+  String createChat = 
+  """
+  mutation createChat(\$id_post: Int!, \$id_criador: Int!, \$id_receptor: Int!) {
+    createChat(id_post: \$id_post, id_criador: \$id_criador, id_receptor: \$id_receptor) {
+      code
+      message
+      chat {
+        id
       }
     }
   }
@@ -150,6 +177,46 @@ class PostDetalhePageMiddleware extends MiddlewareClass {
 
     if(action is DislikePostSuccess) {
       
+    }
+
+    if(action is GetChat) {
+      final getChatResponse = await query(
+        getUniqueChat,
+        variables: {
+          'id_post': store.state.postDetalhePageState.post['id'],
+          'id_criador': action.userId,
+          'id_receptor': action.receptorId,
+        }
+      );
+      (getChatResponse['getUniqueChat']['chat']['id'] != null)
+        ? store.dispatch(new GetChatSuccess(getChatResponse['getUniqueChat']['chat']))
+        : store.dispatch(new CreateChat(action.receptorId, action.userId));
+    }
+
+    if(action is GetChatSuccess) {
+      Keys.navKey.currentState.pushNamed(
+        'chat-detalhe-page',
+        arguments: ChatArguments(action.chat)
+      );
+    }
+
+    if(action is CreateChat) {
+      final createChatResponse = await mutation(
+        createChat,
+        variables: {
+          'id_post': store.state.postDetalhePageState.post['id'],
+          'id_criador': action.userId,
+          'id_receptor': action.receptorId,
+        }
+      );
+      store.dispatch(new CreateChatSuccess(createChatResponse['createChat']['chat']));
+    }
+
+    if(action is CreateChatSuccess) {
+      Keys.navKey.currentState.pushNamed(
+        'chat-detalhe-page',
+        arguments: ChatArguments(action.chat)
+      );
     }
     
     next(action);

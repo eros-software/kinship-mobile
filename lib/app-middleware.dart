@@ -1,5 +1,7 @@
 import 'package:kinship_mobile/app-state.dart';
 import 'package:kinship_mobile/pages/home-page/+state/home-page-middleware.dart';
+import 'package:kinship_mobile/pages/home-page/chats-list-page/+state/chats-list-page-middleware.dart';
+import 'package:kinship_mobile/pages/home-page/chats-list-page/chat-detalhe-page/+state/chat-detalhe-page-middleware.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/+state/posts-list-page-middleware.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/create-post-page/+state/create-post-page-middleware.dart';
 import 'package:kinship_mobile/pages/home-page/posts-list-page/post-detalhe-page/+state/post-detalhe-page-middleware.dart';
@@ -13,5 +15,7 @@ final List<Middleware<AppState>> appMiddleware = [
   InitialSetupWidgetMiddleware(),
   CreatePostPageMiddleware(),
   PostsListPageMiddleware(),
+  ChatsListPageMiddleware(),
   PostDetalhePageMiddleware(),
+  ChatDetalhePageMiddleware(),
 ];

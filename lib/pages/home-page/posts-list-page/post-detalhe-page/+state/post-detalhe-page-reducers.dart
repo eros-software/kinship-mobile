@@ -12,6 +12,10 @@ final postDetalhePageReducers = combineReducers<PostDetalhePageState>([
   TypedReducer<PostDetalhePageState, LikePostSuccess>(_likePostSuccess),
   TypedReducer<PostDetalhePageState, DislikePost>(_dislikePost),
   TypedReducer<PostDetalhePageState, DislikePostSuccess>(_dislikePostSuccess),
+  TypedReducer<PostDetalhePageState, GetChat>(_getChat),
+  TypedReducer<PostDetalhePageState, GetChatSuccess>(_getChatSuccess),
+  TypedReducer<PostDetalhePageState, CreateChat>(_createChat),
+  TypedReducer<PostDetalhePageState, CreateChatSuccess>(_createChatSuccess),
 ]);
 
 PostDetalhePageState _loadPost(PostDetalhePageState state, LoadPost action) => state;
@@ -53,3 +57,11 @@ PostDetalhePageState _dislikePostSuccess(PostDetalhePageState state, DislikePost
   newPost['likes'].removeWhere((like) => like['id_usuario'] == action.userId);
   return state.copyWith(post: newPost);
 }
+
+PostDetalhePageState _getChat(PostDetalhePageState state, GetChat action) => state;
+
+PostDetalhePageState _getChatSuccess(PostDetalhePageState state, GetChatSuccess action) => state;
+
+PostDetalhePageState _createChat(PostDetalhePageState state, CreateChat action) => state;
+
+PostDetalhePageState _createChatSuccess(PostDetalhePageState state, CreateChatSuccess action) => state;
