@@ -12,6 +12,7 @@ class PostDetalhePageModel{
   final Function(dynamic post) likePost;
   final Function(dynamic post) dislikePost;
   final Function(dynamic post, String texto) createComentario;
+  final Function(int receptorId, int userId) getChat;
 
   PostDetalhePageModel({
     this.isLoading,
@@ -21,6 +22,7 @@ class PostDetalhePageModel{
     this.likePost,
     this.dislikePost,
     this.createComentario,
+    this.getChat,
   });
 
   static PostDetalhePageModel fromStore(Store<AppState> store) =>
@@ -32,6 +34,7 @@ class PostDetalhePageModel{
       likePost: (dynamic post) => store.dispatch(new LikePost(post)),
       dislikePost: (dynamic post) => store.dispatch(new DislikePost(post)),
       createComentario: (dynamic post, String texto) => store.dispatch(new CreateComentario(post, texto)),
+      getChat: (int receptorId, int userId) => store.dispatch(new GetChat(receptorId, userId)),
     );
 
 }

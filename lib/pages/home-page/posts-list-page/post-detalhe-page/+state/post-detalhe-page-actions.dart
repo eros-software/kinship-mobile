@@ -49,3 +49,25 @@ class DislikePostSuccess {
   DislikePostSuccess(this.post, this.userId);
 }
 
+class GetChat {
+  final int receptorId;
+  final int userId;
+  GetChat(this.receptorId, this.userId);
+}
+
+class GetChatSuccess {
+  final dynamic chat;
+  GetChatSuccess(this.chat);
+}
+
+class CreateChat {
+  final int receptorId;
+  final int userId;
+  CreateChat(this.receptorId, this.userId);
+}
+
+class CreateChatSuccess {
+  final dynamic chat;
+  CreateChatSuccess(this.chat);
+}
+
