@@ -6,6 +6,7 @@ import 'package:redux/redux.dart';
 final loginPageReducer = combineReducers<LoginPageState>([
   TypedReducer<LoginPageState,LoginAction>(_loginAction),
   TypedReducer<LoginPageState,LoginSuccessAction>(_loginSuccessAction),
+  TypedReducer<LoginPageState,LogoutAction>(_logoutAction),
 
 ]);
 
@@ -13,4 +14,5 @@ LoginPageState _loginAction(LoginPageState state, LoginAction action) => state.c
 
 LoginPageState _loginSuccessAction(LoginPageState state, LoginSuccessAction action) => state.copyWith(user: action.user);
 
+LoginPageState _logoutAction(LoginPageState state, LogoutAction action) => state;
 
